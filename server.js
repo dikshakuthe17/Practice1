@@ -1,6 +1,7 @@
 const express = require("express");
 require("./db.js"); // Import the db.js file to use the connection object
 const app = express();
+require("dotenv").config();
 
 // const Person = require("./models/person.js"); // Import the person model
 // const MenuItem = require("./models/menu.js"); // Import the menu model
@@ -9,8 +10,14 @@ const bodyParser = require("body-parser"); // Import body-parser middleware
 app.use(bodyParser.json()); // Use body-parser to parse JSON request bodies
 
 // Start the server immediately (db.js handles connection events)
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+// app.listen(3000, () => {
+//   console.log("Server is running on port 3000");
+// });
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 // Define routes
@@ -106,11 +113,10 @@ app.get("/idli", (req, res) => {
 //   }
 // });
 
-
 // Import the person routes from personRoutes.js
 const personRoutes = require("./Routes/personRoutes.js");
 
-// Use the person routes 
+// Use the person routes
 app.use("/person", personRoutes);
 
 // import the menu routes
