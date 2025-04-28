@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const express = require("express");
+const app = express();
 require("dotenv").config();
 
 // Define the MongoDB connection URL in local storage or our storage
