@@ -23,6 +23,7 @@ router.get("/", async (req, res) => {
   try {
     const menuItems = await MenuItem.find(); // Find all menu items in the database
     res.status(200).json(menuItems); // Respond with the list of menu items
+    console.log("data fetched");
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch menu items" }); // Handle errors
   }
