@@ -9,7 +9,10 @@ require("dotenv").config();
 // const mongoURL = "mongodb+srv://helloworld:helloworlddiksha@cluster0.bnb2nx5.mongodb.net/"; // Replace with your MongoDB Atlas connection string
 
 // shortcut for dotenv
-const mongoURL = process.env.MONGO_URL_LOCAL; // Use the environment variable for MongoDB connection string
+// const mongoURL = process.env.MONGO_URL_LOCAL; // Use the environment variable for MongoDB connection string
+
+// shortcut for dotenv
+const mongoURL = process.env.MONGO_URL_ATLAS; // Use the environment variable for MongoDB Atlas connection string
 
 // Connect to the MongoDB database using mongoose
 mongoose.connect(mongoURL);
