@@ -14,6 +14,7 @@ app.use(bodyParser.json()); // Use body-parser to parse JSON request bodies
 //   console.log("Server is running on port 3000");
 // });
 
+// variable for port number 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
