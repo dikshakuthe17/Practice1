@@ -1,5 +1,5 @@
-const express = require('express');
-const mongoose = require('mongoose');
+const express = require("express");
+const mongoose = require("mongoose");
 
 // Define the person schema
 // A schema defines the structure of a document in a MongoDB collection
@@ -22,13 +22,22 @@ const personSchema = new Schema({
     unique: true,
   },
 
-  work:{
+  work: {
     type: String,
     required: true,
-    enum: ['student', 'teacher', 'engineer', 'doctor'],
-
+    enum: ["student", "teacher", "engineer", "doctor"],
   },
   address: {
+    type: String,
+    required: true,
+  },
+
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
     type: String,
     required: true,
   },
@@ -40,5 +49,5 @@ const personSchema = new Schema({
 // The model name is usually singular and capitalized, while the collection name is pluralized
 // The model provides methods for CRUD operations (Create, Read, Update, Delete) on the collection
 
-const Person =  mongoose.model('Person', personSchema);
+const Person = mongoose.model("Person", personSchema);
 module.exports = Person;

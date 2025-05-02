@@ -16,9 +16,9 @@ const mongoURL = process.env.MONGO_URL_ATLAS; // Use the environment variable fo
 
 // Connect to the MongoDB database using mongoose
  mongoose.connect(mongoURL);
-
 // Get the default connection object
 const db = mongoose.connection;
+
 
 // Define event listeners for the connection object
 db.on("connected", () => {
