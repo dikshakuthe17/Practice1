@@ -8,6 +8,20 @@ const localStrategy = require("passport-local").Strategy;
 // variable for port number
 const PORT = process.env.PORT || 3000;
 
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+// Middleware function
+const logger = (req, res, next) => {
+  console.log(
+    `[${new Date().toLocaleString()}] Request made to : ${req.originalUrl}`
+  );
+  next();
+};
+// For all routes
+app.use(logger);
+
 // Configure Passport.js with the local strategy
 passport.use(
   new localStrategy(async (USERNAME, PASSWORD, done) => {
@@ -33,22 +47,8 @@ passport.use(
 // Middleware to initialize Passport.js
 app.use(passport.initialize());
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-// Middleware function
-const logger = (req, res, next) => {
-  console.log(
-    `[${new Date().toLocaleString()}] Request made to : ${req.originalUrl}`
-  );
-  next();
-};
-// For all routes
-app.use(logger);
-
 // Define routes
-app.get("/", (req, res) => {
+app.get("/", passport.authenticate('local',{session:false}), (req, res) => {
   res.send("Welcome to my express app!");
 });
 
