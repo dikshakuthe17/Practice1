@@ -4,6 +4,7 @@ const app = express();
 require("dotenv").config();
 const passport = require("passport");
 const localStrategy = require("passport-local").Strategy;
+ 
 
 // variable for port number
 const PORT = process.env.PORT || 3000;
@@ -48,7 +49,7 @@ passport.use(
 app.use(passport.initialize());
 
 // Define routes
-app.get("/", passport.authenticate('local',{session:false}), (req, res) => {
+app.get("/", (req, res) => {
   res.send("Welcome to my express app!");
 });
 
