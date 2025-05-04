@@ -43,11 +43,31 @@ const personSchema = new Schema({
   },
 });
 
-// Create the person model using the schema
-// Model is a construct to create and manage documents in a collection
-// The first parameter is the name of the model, and the second is the schema
-// The model name is usually singular and capitalized, while the collection name is pluralized
-// The model provides methods for CRUD operations (Create, Read, Update, Delete) on the collection
+personSchema.pre("save", async function (next) {
+const person =this;
+
+// hash the password only if it has been modified (or is new)
+if (!person.isModified("password")) return next();
+
+try
+{
+  // hash the password generation using bcrypt
+  const salt = await bcrypt.genSalt(10);  
+
+  // hash passord
+  const hashedPassword = await bcrypt.hashedPassword(person.password , salt)
+
+  // override the plain password with the hashed one 
+  person.password = hashedPassword;
+  
+}
+catch (error) {
+  console.error("Error hashing password:", error);
+   return next(error); // Pass the error to the next middleware
+}
+});
+
+
 
 const Person = mongoose.model("Person", personSchema);
 module.exports = Person;

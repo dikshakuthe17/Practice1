@@ -8,7 +8,7 @@ passport.use(
       const user = await Person.findOne({ username });
       if (!user) return done(null, false, { message: "Incorrect username." });
 
-      const isPasswordValid = user.password === password; // Replace with bcrypt comparison if passwords are hashed
+      const isPasswordValid = user.comparePassword(password) // Replace with bcrypt comparison if passwords are hashed
       if (!isPasswordValid) return done(null, false, { message: "Incorrect password." });
 
       return done(null, user);
@@ -17,5 +17,7 @@ passport.use(
     }
   })
 );
+
+
 
 module.exports = passport;

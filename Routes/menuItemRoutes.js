@@ -29,6 +29,26 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:tasteType", async (req, res) => {
+  try {
+    const tasteType = req.params.tasteType; // Get the work type from the request parameters
+    if (
+      tasteType == "sour" ||
+      tasteType == "bitter" ||
+      tasteType == "sweet" ||
+      tastetype == "spicy"
+    ) {
+      console.log("response fetched");
+      const menuItems = await MenuItem.find({ taste: tasteType }); // Find persons with the specified taste type
+      res.status(200).json(menuItems); // Respond with the list of persons
+    } else {
+      res.status(400).json({ error: "Invalid taste type" }); // Handle invalid taste type
+    }
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch menu" }); // Handle errors
+  }
+});
+
 
 // put method to update menu item data by id
 router.put("/:id", async (req, res) => {
