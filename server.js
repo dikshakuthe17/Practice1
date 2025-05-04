@@ -2,10 +2,10 @@ const express = require("express");
 require("./db.js"); // Import the db.js file to use the connection object
 const app = express();
 require("dotenv").config();
-const passport = require("passport");
-const localStrategy = require("passport-local").Strategy;
- 
+const passport = require("./auth.js"); // Import the passport configuration
 
+const bodyParser = require("body-parser");
+app.use(bodyParser.json()); // Middleware to parse JSON request bodies
 // variable for port number
 const PORT = process.env.PORT || 3000;
 
@@ -23,32 +23,12 @@ const logger = (req, res, next) => {
 // For all routes
 app.use(logger);
 
-// Configure Passport.js with the local strategy
-passport.use(
-  new localStrategy(async (USERNAME, PASSWORD, done) => {
-    try {
-      console.log("Received credentials:", USERNAME, PASSWORD);
-      const user = await Person.findOne({ username: USERNAME });
-      if (!user) return done(null, false, { message: "Incorrect username." });
-
-      const isPasswordValid = user.password === PASSWORD;
-      if (isPasswordValid) {
-        console.log("User authenticated successfully:", user);
-        return done(null, user); // User authenticated successfully
-      } else {
-        console.log("Invalid password for user:", USERNAME);
-        return done(null, false, { message: "Incorrect password." });
-      }
-    } catch (error) {
-      return done(error); // Handle any errors that occur during authentication
-    }
-  })
-);
-
 // Middleware to initialize Passport.js
 app.use(passport.initialize());
 
 // Define routes
+const localAuthMiddleware = passport.authenticate("local", { session: false });
+
 app.get("/", (req, res) => {
   res.send("Welcome to my express app!");
 });
@@ -61,7 +41,6 @@ app.use("/person", personRoutes);
 
 // Import the menu routes
 const menuRoutes = require("./Routes/menuItemRoutes.js");
-const Person = require("./models/person.js");
 
 // Use the menu routes
-app.use("/menu", menuRoutes);
+app.use("/menu", localAuthMiddleware, menuRoutes);
