@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware to initialize Passport.js
 app.use(passport.initialize());
 
-// Define routes
+// define routes for authentication 
 const localAuthMiddleware = passport.authenticate("local", { session: false });
 
 app.get("/", (req, res) => {
