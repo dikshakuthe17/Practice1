@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt"); // Import bcrypt for password hashing
 
 // Define the person schema
 // A schema defines the structure of a document in a MongoDB collection
@@ -42,7 +43,6 @@ const personSchema = new Schema({
     required: true,
   },
 });
-
 personSchema.pre("save", async function (next) {
 const person =this;
 
@@ -51,11 +51,11 @@ if (!person.isModified("password")) return next();
 
 try
 {
-  // hash the password generation using bcrypt
+  //generate a salt using bcrypt for hashing the password
   const salt = await bcrypt.genSalt(10);  
 
-  // hash passord
-  const hashedPassword = await bcrypt.hashedPassword(person.password , salt)
+  // hash the plain text password using the generated salt
+  const hashedPassword = await bcrypt.hash(person.password , salt)
 
   // override the plain password with the hashed one 
   person.password = hashedPassword;
@@ -65,7 +65,24 @@ catch (error) {
   console.error("Error hashing password:", error);
    return next(error); // Pass the error to the next middleware
 }
+// If no error occurred, proceed to the next middleware or save the document
+next(); //to allow the save operation to proceed with the hashed password.
 });
+
+// Method to compare passwords
+// This method will be used to compare the password provided by the user during login with the hashed password stored in the database
+personSchema.methods.comparePassword = async function (candidatePassword) {
+  
+  try {
+    // Compare the candidate password with the hashed password using bcrypt
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    return isMatch;
+  } catch (error) {
+    console.error("Error comparing passwords:", error);
+    throw error; // Rethrow the error to be handled by the calling function
+  }
+} 
+
 
 
 

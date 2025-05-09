@@ -8,15 +8,15 @@ app.use(express.json()); // Middleware to parse JSON request bodies
 // variable for port number
 const PORT = process.env.PORT || 3000;
 
-// Middleware function
-const logger = (req, res, next) => {
-  console.log(
-    `[${new Date().toLocaleString()}] Request made to : ${req.originalUrl}`
-  );
-  next();
-};
-// For all routes
-app.use(logger);
+// // Middleware function
+// const logger = (req, res, next) => {
+//   console.log(
+//     `[${new Date().toLocaleString()}] Request made to : ${req.originalUrl}`
+//   );
+//   next();
+// };
+// // For all routes
+// app.use(logger);
 
 // Middleware to initialize Passport.js
 app.use(passport.initialize());
@@ -33,8 +33,8 @@ const menuRoutes = require("./Routes/menuItemRoutes.js");
 const personRoutes = require("./Routes/personRoutes.js");
 
 // Use the routes
-app.use("/menu", localAuthMiddleware, menuRoutes);
-app.use("/person", personRoutes);
+app.use("/menu",  menuRoutes);
+app.use("/person",localAuthMiddleware, personRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
