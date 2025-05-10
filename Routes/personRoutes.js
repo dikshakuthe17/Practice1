@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Person = require("../models/person.js"); // Import the person model
 
+
+
 // Middleware to parse JSON request bodies
 router.use(express.json());
 
