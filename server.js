@@ -34,7 +34,7 @@ const personRoutes = require("./Routes/personRoutes.js");
 
 // Use the routes
 app.use("/menu",  menuRoutes);
-app.use("/person",localAuthMiddleware, personRoutes);
+app.use("/person", personRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

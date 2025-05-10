@@ -6,7 +6,7 @@ const Person = require("../models/person.js"); // Import the person model
 router.use(express.json());
 
 // post route to add person data
-router.post("/", async (req, res) => {
+router.post("/signup", async (req, res) => {
   try {
     const personData = req.body; // Get the request body
     const newPerson = new Person(personData); // Create a new Person instance
